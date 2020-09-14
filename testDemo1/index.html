@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>表单提交</title>
+    <style>
+        label{
+            display: block;
+        }
+        select{
+            width:"200px";
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page"></div>
+    
+   <script src=""></script>
+    <script>
+       function yanzhen(){
+           var x = document.forms["queryForm"]["DBType"].value;
+           if(x==null || x ==""){
+               alert("该值不能为空！");
+               return false;
+           }
+       }
+       function getDBType(){
+       
+       }
+       var dataopy = ["etl1","etl2","etl3","etl4"];
+       var page = document.getElementById("page");
+       var addPanel = document.createElement("div")
+       var listPanel = document.createElement("div")
+       var form = document.createElement("form");
+       var addtab = document.createElement("table");
+       var listtab = document.createElement("table")
+       listPanel.setAttribute("id","tableInfo")
+       page.appendChild(addPanel);page.appendChild(listPanel);
+       addPanel.appendChild(form);
+       listPanel.appendChild(listtab)
+       form.appendChild(addtab);
+       form.setAttribute("name","queryForm");
+       form.setAttribute("class","querForm");
+       form.setAttribute("method","post");
+       form.setAttribute("action","data.json");
+//addpanel
+       var label1 = document.createElement("label");
+       addtab.appendChild(label1);
+       label1.innerText="数据库类型";
+       var DBType = document.createElement("select");
+       label1.appendChild(DBType);
+       DBType.setAttribute("name","dbtype");
+
+       var label2 = document.createElement("label");
+       addtab.appendChild(label2);
+       label2.innerText="数据库名称";
+       var DBName = document.createElement("select");
+       label2.appendChild(DBName);
+       DBName.setAttribute("name","dbid")
+
+       var label3 = document.createElement("label");
+       addtab.appendChild(label3);
+       label3.innerText="数据源名称";
+       var DBYName = document.createElement("select");
+       label3.appendChild(DBYName);
+       DBYName.setAttribute("name","dbyname")
+
+       var label4 = document.createElement("label");
+       addtab.appendChild(label4);
+       label4.innerText="预警指标";
+       var YJZB = document.createElement("select");
+       label4.appendChild(YJZB);
+       YJZB.setAttribute("name","yjzb")
+       YJZB.setAttribute("width","200px")     
+       for(i=0;i<dataopy.length;i++){
+        var opy=document.createElement("option");
+           opy.innerText=dataopy[i];
+           YJZB.appendChild(opy);          
+       }
+       
+       var label5 = document.createElement("label");
+       addtab.appendChild(label5);
+       label5.innerText="监控时间策略";
+       var JKTime = document.createElement("input");
+       label5.appendChild(JKTime);
+       JKTime.setAttribute("jksjcl","jksjcl")
+       
+       var label6 = document.createElement("label");
+       addtab.appendChild(label6);
+       label6.innerText="短信接收人";
+       var MsgPer = document.createElement("select");
+       label6.appendChild(MsgPer);
+       MsgPer.setAttribute("name","msgper")
+
+       var label7 = document.createElement("label");
+       addtab.appendChild(label7);
+       label7.innerText="是否预警";
+       var SFYJ = document.createElement("input");
+       label7.appendChild(SFYJ);
+       SFYJ.setAttribute("type","checkbox")
+       SFYJ.setAttribute("name","sfyj")
+
+       var save = document.createElement("input");
+       
+       save.setAttribute("type","submit");
+       save.setAttribute("value","保存");
+       form.appendChild(save);
+//listPanel
+
+       
+
+      var data = [{ xh: "1", dbid: "db1", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }, { xh: "2", dbid: "db1", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }, { xh: "3", dbid: "db1", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }];
+   
+        var tableInfos = document.getElementById('tableInfo');
+        var code = '<TABLE style="width:900px;height:350px;" border="1">';
+        code += '<thead><TR><TH>序号</TH><TH>数据库名称</TH><TH>预警指标</TH><TH>监控时间策略</TH><TH>是否预警</TH><TH>修改</TH></TR></thead>';
+        for (var i = 0; i < data.length; i++) {
+
+            code += '<TR><TD>' + data[i].xh + '</TD><TD>' + data[i].dbid + '</TD><TD>' + data[i].yjzb + '</TD><TD>' + data[i].jksjcl + '</TD><TD>' + data[i].sfyj + '</TD><TD><input type="button" value="修改" onclick="fnEdi"></TD></TR>';
+        }
+        tableInfos.innerHTML = code + '</TABLE>';
+
+
+    </script>
+</body>
+
+</html>
