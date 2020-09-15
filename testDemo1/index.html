@@ -49,7 +49,7 @@
         form.setAttribute("method", "post");
         form.setAttribute("action", "data.json");
         //addpanel
-        function createSelect(labelName, name, store, type) {
+        function createInput(labelName, name, store, type) {
             this.labelName = labelName;
             this.name = name;
             this.store = store;
@@ -74,13 +74,13 @@
             }
         }
 
-        createSelect("数据库类型", "dbtype", dataDbtype, "select");
-        createSelect("数据库名称", "dbid", dataDbid, "select");
-        createSelect("数据源名称", "dbyname", dataDbyname, "select");
-        createSelect("预警指标", "yjzb", dataYjzb, "select");
-        createSelect("时间监控策略", "sjjkcl", dataDbyname, "input");
-        createSelect("短信接收人", "msgper", dataMsg, "select");
-        createSelect("是否预警", "sfyj", dataSfyj, "checkbox")
+        createInput("数据库类型", "dbtype", dataDbtype, "select");
+        createInput("数据库名称", "dbid", dataDbid, "select");
+        createInput("数据源名称", "dbyname", dataDbyname, "select");
+        createInput("预警指标", "yjzb", dataYjzb, "select");
+        createInput("时间监控策略", "sjjkcl", dataDbyname, "input");
+        createInput("短信接收人", "msgper", dataMsg, "select");
+        createInput("是否预警", "sfyj", dataSfyj, "checkbox")
 
         var save = document.createElement("input");
 
