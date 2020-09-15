@@ -1,0 +1,54 @@
+#formInfo {
+    text-align: center;
+}
+
+#formInfo form table tr label {
+    width: 500px;
+    text-align: right;
+    padding:15px;
+}
+
+#formInfo form table {
+    width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+#formInfo form tr div{
+    width: 800px;
+    padding:15px 0px 15px 100px
+}
+
+select {
+    width: 250px;height: 35px;
+}
+
+#formInfo table input {
+    width: 250px;height: 30px;
+}
+#saveBtn{
+    display: inline-block;
+    width: 50px;height: 30px;
+    background-color: deepskyblue;
+    border-radius: 15%;
+}
+
+table {
+    background-color: antiquewhite;
+    display: block;
+}
+
+thead {
+    background-color:darkgrey;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+}
+th{width: 250px;}
+td {
+    text-align: center;
+}
+#tableInfo table{
+    text-align: center;
+    border:"1";
+}
