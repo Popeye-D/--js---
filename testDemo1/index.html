@@ -19,15 +19,40 @@
                 return false;
             }
         }
-        function getDBType() {
+
+        
+        function funSu(relust){
+            this.dataDbtype=relust;
 
         }
+        function Ajax(url,funSu) {
+           
+            var ajaxObj = new XMLHttpRequest();
+            var responseData;
+    
+            ajaxObj.open('get', url,true);
 
-        var dataDbtype = [{ option: "o", opid: "01" }, { option: "r", opid: "02" }, { option: "mo", opid: "03" }, { option: "my", opid: "04" }];
+            ajaxObj.send();
+
+            ajaxObj.onreadystatechange = function () {
+                
+                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                   
+                   funSu(ajaxObj.responseText);
+                    
+                }
+            }
+           
+
+        }
+        // var get = 
+        var dataDbtype = new Ajax('./data/dataDbtype.json',funSu);
         var dataDbid = [{ option: "o1", opid: "01" }, { option: "r1", opid: "02" }, { option: "mo1", opid: "03" }, { option: "my1", opid: "04" }];
+        var dataDbid2 = [{ option: "o2", opid: "01" }, { option: "r2", opid: "02" }, { option: "mo2", opid: "03" }, { option: "my2", opid: "04" }];
         var dataDbyname = [{ option: "sad", opid: "01" }, { option: "rasd", opid: "02" }, { option: "mdsao", opid: "03" }, { option: "mdasy", opid: "04" }];
+        var dataDbyname2 = [{ option: "sad", opid: "01" }, { option: "rasd", opid: "02" }, { option: "mdsao", opid: "03" }, { option: "mdasy", opid: "04" }];
         var dataYjzb = [{ option: "etl1", opid: "01" }, { option: "etl2", opid: "02" }, { option: "etl3", opid: "03" }, { option: "etl4", opid: "04" }];
-        var dataMsg = [{ option: "etl1", opid: "01" }, { option: "etl2", opid: "02" }, { option: "etl3", opid: "03" }, { option: "etl4", opid: "04" }];
+        var dataMsg = [{ option: "etl5", opid: "01" }, { option: "etl6", opid: "02" }, { option: "etl7", opid: "03" }];
         var dataSfyj = [];
         var page = document.getElementById("page");
         //    var fragment= document.createDocumentFragment();
@@ -50,10 +75,6 @@
         form.setAttribute("action", "data.json");
         //addpanel
         function createInput(labelName, name, store, type) {
-            this.labelName = labelName;
-            this.name = name;
-            this.store = store;
-            this.type = type;
             var tr = document.createElement("tr");
             addtab.appendChild(tr);
             var indiv = document.createElement("div");
@@ -99,8 +120,6 @@
         thead.appendChild(tr1);
 
         function createCloum(label, Name) {
-            this.label = label;
-            this.Name = Name;
             var th = document.createElement("th");
             th.innerText = label;
             tr1.appendChild(th)
@@ -111,6 +130,22 @@
         createCloum("监控时间策略", "jksjcl");
         createCloum("是否预警", "sfyj");
         createCloum("操作", "xh");
+        
+        function Cloum(label,name){
+            this.label = label;
+            this.name = name;
+        }
+        Cloum.prototype.render=function(){
+                var th = document.createElement("th");
+                th.innerText = this.label;
+                tr1.appendChild(th);
+            }
+        new Cloum("xuhao","xh").render();
+
+
+        // cloum(name,lable,render());
+        // new cloum(name,lable).render();
+
 
 
 
