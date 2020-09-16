@@ -134,12 +134,13 @@
         function Cloum(label,name){
             this.label = label;
             this.name = name;
-        }
-        Cloum.prototype.render=function(){
+       
+        this.render=function(){
                 var th = document.createElement("th");
                 th.innerText = this.label;
                 tr1.appendChild(th);
             }
+        }
         new Cloum("xuhao","xh").render();
 
 
