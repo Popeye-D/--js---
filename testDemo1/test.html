@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示文档</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+	
+<script type="text/javascript">  
+
+var data = new Array();
+
+ function Ajax(){
+
+        var ajaxObj = new XMLHttpRequest();
+        var responseData;
+        
+        ajaxObj.open('get', './data/dataDbtype.json',false);
+
+        ajaxObj.send();
+
+        
+        ajaxObj.onreadystatechange = function () {
+           
+            if (ajaxObj.readyState == 2 && ajaxObj.status == 200) {
+                return ajaxObj.responseText;
+                // return this.data;
+            }
+            
+        }
+      
+       
+    }
+    var test = Ajax();
+    alert(test)
+
+  
+  </script> 
+</body>
+</html>
