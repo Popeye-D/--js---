@@ -9,23 +9,26 @@
 
 <body>
     <div id="page"></div>
+    <checkbox></checkbox>
 
     <script src=""></script>
     <script>
-        function yanzhen() {
-            var x = document.forms["queryForm"]["DBType"].value;
-            if (x == null || x == "") {
-                alert("该值不能为空！");
+        function check() {
+            var sjjkcl = document.querySelector('#sjjkcl').value;
+            if (sjjkcl == null || sjjkcl == "") {
+                alert("时间监控策略不能为空！");
+                return false;
+            }
+            var dbtype = document.querySelector('#dbtype').value;
+            if (dbtype == null || sjjkcl == "") {
+                alert("数据库类型不能为空！");
                 return false;
             }
         }
 
         
-        function funSu(relust){
-            this.dataDbtype=relust;
-
-        }
-        function Ajax(url,funSu) {
+        
+       createSelect.prototype.Ajax =  function (url,name) {
            
             var ajaxObj = new XMLHttpRequest();
             var responseData;
@@ -38,25 +41,53 @@
                 
                 if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
                    
-                   funSu(ajaxObj.responseText);
+                    var jsonObj =  JSON.parse(ajaxObj.responseText)
+                    for (var i = 0; i < jsonObj.length; i++) {
+                    var op = document.createElement("option");
+                    op.setAttribute("value",[i])
+                    var inputModel = document.getElementById(name);
+                    op.innerText = jsonObj[i].option;
+                    inputModel.appendChild(op);
+                    
+                }if ( name == "dbtype"){
+
+                        // var select = document.querySelector('#dbtype');
+                        var value = document.getElementById('dbtype').value;
+                        // select.setAttribute("onchange",changeValue(value))
+                        var el = document.querySelector('#dbtype');
+                         el.addEventListener("change", () => { changeValue(value) }, true);
+                    }
                     
                 }
             }
            
 
         }
-        // var get = 
-        var dataDbtype = new Ajax('./data/dataDbtype.json',funSu);
-        var dataDbid = [{ option: "o1", opid: "01" }, { option: "r1", opid: "02" }, { option: "mo1", opid: "03" }, { option: "my1", opid: "04" }];
-        var dataDbid2 = [{ option: "o2", opid: "01" }, { option: "r2", opid: "02" }, { option: "mo2", opid: "03" }, { option: "my2", opid: "04" }];
-        var dataDbyname = [{ option: "sad", opid: "01" }, { option: "rasd", opid: "02" }, { option: "mdsao", opid: "03" }, { option: "mdasy", opid: "04" }];
-        var dataDbyname2 = [{ option: "sad", opid: "01" }, { option: "rasd", opid: "02" }, { option: "mdsao", opid: "03" }, { option: "mdasy", opid: "04" }];
-        var dataYjzb = [{ option: "etl1", opid: "01" }, { option: "etl2", opid: "02" }, { option: "etl3", opid: "03" }, { option: "etl4", opid: "04" }];
-        var dataMsg = [{ option: "etl5", opid: "01" }, { option: "etl6", opid: "02" }, { option: "etl7", opid: "03" }];
-        var dataSfyj = [];
+        
+        function changeValue(value){
+            var oAjax = new XMLHttpRequest();
+            oAjax.open('get','./data/dataDbyname.json')
+            oAjax.send();
+            oAjax.onreadystatechange = function(){
+                if (oAjax.readyState == 4 && oAjax.status == 200){
+                    var data =  JSON.parse(oAjax.responseText);
+                    var datas = data[value];
+                    var dbyname = document.querySelector('#dbyname');
+                    dbyname.length = 0;
+                    for (var i = 0; i < datas.length; i++) {
+                        var op = document.createElement("option");
+                        op.innerHTML = datas[i];
+                        dbyname.appendChild(op);
+                    }
+                }
+            }
+            
+
+        }
+ 
+
         var page = document.getElementById("page");
-        //    var fragment= document.createDocumentFragment();
-        //    page.appendChild(fragment)
+       
         var addPanel = document.createElement("div");
         var listPanel = document.createElement("div");
         var form = document.createElement("form");
@@ -72,9 +103,8 @@
         form.setAttribute("name", "queryForm");
         form.setAttribute("class", "querForm");
         form.setAttribute("method", "post");
-        form.setAttribute("action", "data.json");
-        //addpanel
-        function createInput(labelName, name, store, type) {
+        
+        function createSelect(labelName, name, type, store) {
             var tr = document.createElement("tr");
             addtab.appendChild(tr);
             var indiv = document.createElement("div");
@@ -82,32 +112,43 @@
             var label = document.createElement("label");
             indiv.appendChild(label);
             label.innerHTML = labelName + "<b style='color:red'>*</b>";
-            var inputModel = document.createElement(type);
+            var inputModel = document.createElement("select");
+            
+            indiv.appendChild(inputModel);
+            inputModel.setAttribute("id", name);
+           
+        }
+        function createOther(labelName, name,type) {
+            this.labelName = labelName;
+            this.name = name;
+            this.type = type;
+            var tr = document.createElement("tr");
+            addtab.appendChild(tr);
+            var indiv = document.createElement("div");
+            tr.appendChild(indiv);
+            var label = document.createElement("label");
+            indiv.appendChild(label);
+            label.innerHTML = labelName + "<b style='color:red'>*</b>";
+            var inputModel = document.createElement("input");
             inputModel.setAttribute("type", type)
             indiv.appendChild(inputModel);
-            inputModel.setAttribute("name", name);
-            if (store !== null) {
-                for (var i = 0; i < store.length; i++) {
-                    var op = document.createElement("option");
-                    op.innerText = store[i].option;
-                    inputModel.appendChild(op);
-                }
-            }
+            inputModel.setAttribute("id", name);
+           
         }
-
-        createInput("数据库类型", "dbtype", dataDbtype, "select");
-        createInput("数据库名称", "dbid", dataDbid, "select");
-        createInput("数据源名称", "dbyname", dataDbyname, "select");
-        createInput("预警指标", "yjzb", dataYjzb, "select");
-        createInput("时间监控策略", "sjjkcl", dataDbyname, "input");
-        createInput("短信接收人", "msgper", dataMsg, "select");
-        createInput("是否预警", "sfyj", dataSfyj, "checkbox")
-
+        var Dbtype = new createSelect("数据库类型", "dbtype", "select").Ajax('./data/dataDbtype.json',"dbtype");
+        
+        var Dbid = new createSelect("数据库名称", "dbid", "select").Ajax('./data/dataDbid.json',"dbid");
+        var Dbyname = new createSelect("数据源名称", "dbyname", "select");
+        var Yjzb = new createSelect("预警指标", "yjzb", "select").Ajax('./data/dataYjzb.json',"yjzb");
+        var Sjjkcl = new createOther("时间监控策略", "sjjkcl","input");        
+        var Msgper = new createSelect("短信接收人", "msgper", "select").Ajax('./data/dataYjzb.json',"msgper");
+        var Sfyj = new createOther("是否预警", "sfyj","checkbox");
         var save = document.createElement("input");
 
-        save.setAttribute("type", "submit");
+        save.setAttribute("type", "button");
         save.setAttribute("value", "保存");
         save.setAttribute("id", "saveBtn");
+        save.setAttribute("onclick","check()")
         form.appendChild(save);
         //listPanel
 
@@ -124,12 +165,7 @@
             th.innerText = label;
             tr1.appendChild(th)
         }
-        createCloum("序号", "xh");
-        createCloum("数据库名称", "dbid");
-        createCloum("预警指标", "yjzb");
-        createCloum("监控时间策略", "jksjcl");
-        createCloum("是否预警", "sfyj");
-        createCloum("操作", "xh");
+    
         
         function Cloum(label,name){
             this.label = label;
@@ -141,27 +177,45 @@
                 tr1.appendChild(th);
             }
         }
-        new Cloum("xuhao","xh").render();
+        
+        new Cloum("序号", "xh").render();
+        new Cloum("数据库名称", "dbid").render();
+        new Cloum("预警指标", "yjzb").render();
+        new Cloum("监控时间策略", "jksjcl").render();
+        new Cloum("是否预警", "sfyj").render();
+        new Cloum("操作", "xh").render();
+
+        window.onload = function getCloum() {
+
+                var ajaxObj = new XMLHttpRequest();
+                var responseData;
+
+                ajaxObj.open('get', './data/dataCloum.json', true);
+
+                ajaxObj.send();
+
+                ajaxObj.onreadystatechange = function () {
+
+                    if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+
+                        var jsonObj = JSON.parse(ajaxObj.responseText)
+
+                        var tbody = document.getElementById('tbMain');
+
+                        for (var i = 0; i < jsonObj.length; i++) {
+                            var trow = getDataRow(jsonObj[i]);
+                            tbody.appendChild(trow);
 
 
-        // cloum(name,lable,render());
-        // new cloum(name,lable).render();
+                        }
+
+                    }
+                }
 
 
-
-
-        var dataCloum = [{ xh: "1", dbid: "db1", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }, { xh: "2", dbid: "db2", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }, { xh: "3", dbid: "db3", yjzb: "etl", jksjcl: "1m1c", sfyj: "shi" }];
-
-
-        window.onload = function () {
-            var tbody = document.getElementById('tbMain');
-
-            for (var i = 0; i < dataCloum.length; i++) {
-                var trow = getDataRow(dataCloum[i]);
-                tbody.appendChild(trow);
             }
 
-        }
+    
 
         function getDataRow(h) {
             var row = document.createElement('tr');
