@@ -53,9 +53,10 @@
 
                         // var select = document.querySelector('#dbtype');
                         var value = document.getElementById('dbtype').value;
+                        alert(value)
                         // select.setAttribute("onchange",changeValue(value))
                         var el = document.querySelector('#dbtype');
-                         el.addEventListener("change", () => { changeValue(value) }, true);
+                         el.addEventListener("change", function() { changeValue(value) }, false);
                     }
                     
                 }
