@@ -23,7 +23,7 @@
             }
             var ajaxo = new XMLHttpRequest();
             ajaxo.open('post', './data/data.json', true)
-            ajaxo.send();
+            
             ajaxo.onreadystatechange = function () {
                 if (ajaxo.readyState == 4 && ajaxo.status == 200) {
                     alert("success!");
@@ -33,10 +33,8 @@
                     window.location.reload();
                 }
             }
+            ajaxo.send();
         }
-
-
-
 
 
         var page = document.getElementById("page");
@@ -66,7 +64,8 @@
             indiv.appendChild(label);
             label.innerHTML = labelName + "<b style='color:red'>*</b>";
             var inputModel = document.createElement("select");
-           
+           this.inputModel = inputModel;
+           console.log("this"+this)
             indiv.appendChild(inputModel);
             inputModel.setAttribute("id", name);
             inputModel =  this.inputModel;
@@ -74,10 +73,11 @@
         Select.prototype.Ajax = function (url, name) {
 
             var ajaxObj = new XMLHttpRequest();
-            
+            inputModel = this.inputModel;
+            console.log("this"+this)
             ajaxObj.open('get', url, true);
 
-            ajaxObj.send();
+            
 
             ajaxObj.onreadystatechange = function () {
 
@@ -85,7 +85,9 @@
 
                     var jsonObj = JSON.parse(ajaxObj.responseText)
                     var fragment = document.createDocumentFragment();
-                    var inputModel = document.getElementById(name);
+                    var inputModel = document.getElementById(name)
+                    // var inputModel = this.inputModel;
+                    console.log(this)
                     for (var i = 0; i < jsonObj.length; i++) {
                         var op = document.createElement("option");
                         op.setAttribute("value", [i])
@@ -104,6 +106,7 @@
 
                 }
             }
+            ajaxObj.send();
             //   getAjax("get",url,setOption)
 
         }
@@ -132,7 +135,7 @@
 
             var oAjax = new XMLHttpRequest();
             oAjax.open('get', './data/dataDbyname.json')
-            oAjax.send();
+           
             oAjax.onreadystatechange = function () {
                 if (oAjax.readyState == 4 && oAjax.status == 200) {
                     var data = JSON.parse(oAjax.responseText);
@@ -151,8 +154,10 @@
                     dbyname.appendChild(fragment);
                 }
             }
-            // function setOp() {
-            //     var datas = data[value];
+            oAjax.send();
+            // function setOp(jsonObj) {
+            //     var datas = jsonObj[value];
+            //     alert(datas)
             //     var dbyname = document.querySelector('#dbyname');
             //     var dbid = document.querySelector('#dbid');
             //     dbid.length = 0;
@@ -170,7 +175,7 @@
 
             var odAjax = new XMLHttpRequest();
             odAjax.open('get', './data/dataDbid.json');
-            odAjax.send();
+            
             odAjax.onreadystatechange = function () {
                 if (odAjax.readyState == 4 && odAjax.status == 200) {
                     var data = JSON.parse(odAjax.responseText);
@@ -190,20 +195,24 @@
 
                 }
             }
+            odAjax.send();
 
         }
        
         function getAjax(methoud,url,funSuc,funFlat){
             var ajaxobj = new XMLHttpRequest;
             ajaxobj.open(methoud,url,true);
+            alert(url)
             ajaxobj.onreadystatechange = function(){
                 if(ajaxobj.readyState == 4 && ajaxobj.status == 200){
                     var jsonObj = JSON.parse(ajaxobj.responseText);
+                    alert(jsonObj)
                     funSuc(jsonObj)
                 }else{if(funFlat){
                     funFlat()}
                 }
             }
+            ajaxobj.send();
         }
         function Other(labelName, name, type) {
          
@@ -274,7 +283,7 @@
 
             ajaxObj.open('get', './data/dataCloum.json', true);
 
-            ajaxObj.send();
+            
 
             ajaxObj.onreadystatechange = function () {
 
@@ -293,7 +302,7 @@
 
                 }
             }
-
+            ajaxObj.send();
 
         }
 
