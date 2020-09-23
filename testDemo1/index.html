@@ -21,19 +21,16 @@
                 alert("请选择数据库类型！");
                 return false;
             }
-            var ajaxo = new XMLHttpRequest();
-            ajaxo.open('post', './data/data.json', true)
-            
-            ajaxo.onreadystatechange = function () {
-                if (ajaxo.readyState == 4 && ajaxo.status == 200) {
-                    alert("success!");
-                    window.location.reload();
-                } else {
-                    alert("falt!")
-                    window.location.reload();
-                }
+           
+            getAjax('post','./data/data.json',refrsh,funFlat)
+            function refrsh() {
+                alert("success!");
+                window.location.reload();
             }
-            ajaxo.send();
+            function funFlat() {
+                alert("Flat!");
+                window.location.reload();
+            }
         }
 
 
@@ -64,30 +61,19 @@
             indiv.appendChild(label);
             label.innerHTML = labelName + "<b style='color:red'>*</b>";
             var inputModel = document.createElement("select");
-           this.inputModel = inputModel;
-           console.log("this"+this)
+        //    this.inputModel = inputModel;
+           
             indiv.appendChild(inputModel);
             inputModel.setAttribute("id", name);
-            inputModel =  this.inputModel;
+            this.inputModel = inputModel;
+            console.log("this111"+this.inputModel)
         }
         Select.prototype.Ajax = function (url, name) {
 
-            var ajaxObj = new XMLHttpRequest();
-            inputModel = this.inputModel;
-            console.log("this"+this)
-            ajaxObj.open('get', url, true);
-
-            
-
-            ajaxObj.onreadystatechange = function () {
-
-                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-
-                    var jsonObj = JSON.parse(ajaxObj.responseText)
+              getAjax("get",url,setOption)
+              function setOption(jsonObj) {
                     var fragment = document.createDocumentFragment();
-                    var inputModel = document.getElementById(name)
-                    // var inputModel = this.inputModel;
-                    console.log(this)
+                    var inputModel = document.getElementById(name);
                     for (var i = 0; i < jsonObj.length; i++) {
                         var op = document.createElement("option");
                         op.setAttribute("value", [i])
@@ -103,110 +89,54 @@
                         }, false);
                     }
                     inputModel.appendChild(fragment);
-
-                }
-            }
-            ajaxObj.send();
-            //   getAjax("get",url,setOption)
-
         }
-        // function setOption(jsonObj) {
-        //             var fragment = document.createDocumentFragment();
-        //             var inputModel = document.getElementById(name);
-        //             for (var i = 0; i < jsonObj.length; i++) {
-        //                 var op = document.createElement("option");
-        //                 op.setAttribute("value", [i])
-        //                 op.innerText = jsonObj[i].option;
-        //                 fragment.appendChild(op)
-
-        //             } if (name == "dbtype") {
-
-        //                 var el = document.querySelector('#dbtype');
-        //                 el.addEventListener("change", function () {
-        //                     var value = document.querySelector('#dbtype').value;
-        //                     changeValue(value)
-        //                 }, false);
-        //             }
-        //             inputModel.appendChild(fragment);
-        // }
+        }
+        
         function changeValue(value) {
 
             var value = value - 1;
 
-            var oAjax = new XMLHttpRequest();
-            oAjax.open('get', './data/dataDbyname.json')
-           
-            oAjax.onreadystatechange = function () {
-                if (oAjax.readyState == 4 && oAjax.status == 200) {
-                    var data = JSON.parse(oAjax.responseText);
-                    var datas = data[value];
-                    var dbyname = document.querySelector('#dbyname');
-                    var dbid = document.querySelector('#dbid');
-                    dbid.length = 0;
-                    dbyname.length = 0;
-                    var fragment = document.createDocumentFragment();
+          
+            function setOpA(jsonObj) {
+                var datas = jsonObj[value];
+                
+                var dbyname = document.querySelector('#dbyname');
+               
+                dbyname.length = 0;
+                var fragment = document.createDocumentFragment();
 
-                    for (var i = 0; i < datas.length; i++) {
-                        var op = document.createElement("option");
-                        op.innerHTML = datas[i];
-                        fragment.appendChild(op);
-                    }
-                    dbyname.appendChild(fragment);
+                for (var i = 0; i < datas.length; i++) {
+                    var op = document.createElement("option");
+                    op.innerHTML = datas[i];
+                    fragment.appendChild(op);
                 }
+                dbyname.appendChild(fragment);
             }
-            oAjax.send();
-            // function setOp(jsonObj) {
-            //     var datas = jsonObj[value];
-            //     alert(datas)
-            //     var dbyname = document.querySelector('#dbyname');
-            //     var dbid = document.querySelector('#dbid');
-            //     dbid.length = 0;
-            //     dbyname.length = 0;
-            //     var fragment = document.createDocumentFragment();
-
-            //     for (var i = 0; i < datas.length; i++) {
-            //         var op = document.createElement("option");
-            //         op.innerHTML = datas[i];
-            //         fragment.appendChild(op);
-            //     }
-            //     dbyname.appendChild(fragment);
-            // }
-            // getAjax("get", './data/dataDbyname.json', setOp)
-
-            var odAjax = new XMLHttpRequest();
-            odAjax.open('get', './data/dataDbid.json');
-            
-            odAjax.onreadystatechange = function () {
-                if (odAjax.readyState == 4 && odAjax.status == 200) {
-                    var data = JSON.parse(odAjax.responseText);
-                    var datas = data[value];
-
-                    var dbid = document.querySelector('#dbid');
-                    dbid.length = 0;
-                    var fragment = document.createDocumentFragment();
-
-                    for (var i = 0; i < datas.length; i++) {
-                        var op = document.createElement("option");
-                        op.innerHTML = datas[i];
-                        fragment.appendChild(op);
-                    }
-                    dbid.appendChild(fragment);
-
-
+            getAjax("get", './data/dataDbyname.json', setOpA)
+            getAjax("get", './data/dataDbid.json', setOpB)
+            function setOpB(jsonObj) {
+                var datas = jsonObj[value];
+                var dbid = document.querySelector('#dbid');
+                dbid.length = 0;                
+                var fragment = document.createDocumentFragment();
+                for (var i = 0; i < datas.length; i++) {
+                    var op = document.createElement("option");
+                    op.innerHTML = datas[i];
+                    fragment.appendChild(op);
                 }
+                dbid.appendChild(fragment);
             }
-            odAjax.send();
+          
 
         }
        
         function getAjax(methoud,url,funSuc,funFlat){
             var ajaxobj = new XMLHttpRequest;
-            ajaxobj.open(methoud,url,true);
-            alert(url)
+            ajaxobj.open(methoud,url,true);           
             ajaxobj.onreadystatechange = function(){
                 if(ajaxobj.readyState == 4 && ajaxobj.status == 200){
                     var jsonObj = JSON.parse(ajaxobj.responseText);
-                    alert(jsonObj)
+                    
                     funSuc(jsonObj)
                 }else{if(funFlat){
                     funFlat()}
@@ -214,6 +144,7 @@
             }
             ajaxobj.send();
         }
+        
         function Other(labelName, name, type) {
          
             var tr = document.createElement("tr");
@@ -278,31 +209,15 @@
 
         window.onload = function getCloum() {
 
-            var ajaxObj = new XMLHttpRequest();
-            var responseData;
-
-            ajaxObj.open('get', './data/dataCloum.json', true);
-
-            
-
-            ajaxObj.onreadystatechange = function () {
-
-                if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
-
-                    var jsonObj = JSON.parse(ajaxObj.responseText)
-
-                    var tbody = document.getElementById('tbMain');
+            function settb(jsonObj){
+                var tbody = document.getElementById('tbMain');
 
                     for (var i = 0; i < jsonObj.length; i++) {
                         var trow = getDataRow(jsonObj[i]);
                         tbody.appendChild(trow);
-
-
                     }
-
-                }
             }
-            ajaxObj.send();
+            getAjax('get','./data/dataCloum.json',settb)
 
         }
 
